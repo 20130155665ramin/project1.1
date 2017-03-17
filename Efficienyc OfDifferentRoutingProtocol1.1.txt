@@ -11,14 +11,11 @@ Prepare by:
 Ramin Agha Amin
 Roll no: 130101137
 
-Supervisor name: Sudeep Varshney
-Date of submision: 17/3/2017
-
  
 Overview 
 This is an update to our project previously uploaded in my github profile.
-In this part of the paper I configure Is-Is Routing protocol. Where IS-IS is a link-state interior gateway routing protocol. Like OSPF, IS-IS runs the Dijkstra shortest-path first (SPF) algorithm to create a database of the network’s topology and, from that database, to determine the best (that is, shortest) path to a destination.
-Because I have to upload this paper in text format I’m not able to show pictorial representation of complete network topologies of the configuration and it might be difficult to evaluate.
+In this part of the paper I configure Is-Is Routing protocol. Where IS-IS is a link-state interior gateway routing protocol. Like OSPF, IS-IS runs the Dijkstra shortest-path first (SPF) algorithm to create a database of the networkâ€™s topology and, from that database, to determine the best (that is, shortest) path to a destination.
+Because I have to upload this paper in text format Iâ€™m not able to show pictorial representation of complete network topologies of the configuration and it might be difficult to evaluate.
 We configure all this routing protocols using GNS3 or Packet tracer and because I cannot upload the gns3 or packet tracer files on github so I write the configuration with description in this text file.
 Note: many of termenologies used in this paper are already described in the previos paper, because of this I have not described most of the commands except the newones.
 

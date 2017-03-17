@@ -1,0 +1,182 @@
+Project Name: Efficiency of Different Routing Protocols
+Sharda University
+School of Engineering and Technology
+Computer Science Engineering
+
+
+Supervisor name: Sudeep Varshney
+Date of submit: 16/3/2017
+
+Prepare by:                                         
+Ramin Agha Amin
+Roll no: 130101137
+
+Supervisor name: Sudeep Varshney
+Date of submision: 17/3/2017
+
+ 
+Overview 
+This is an update to our project previously uploaded in my github profile.
+In this part of the paper I configure Is-Is Routing protocol. Where IS-IS is a link-state interior gateway routing protocol. Like OSPF, IS-IS runs the Dijkstra shortest-path first (SPF) algorithm to create a database of the network’s topology and, from that database, to determine the best (that is, shortest) path to a destination.
+Because I have to upload this paper in text format I’m not able to show pictorial representation of complete network topologies of the configuration and it might be difficult to evaluate.
+We configure all this routing protocols using GNS3 or Packet tracer and because I cannot upload the gns3 or packet tracer files on github so I write the configuration with description in this text file.
+Note: many of termenologies used in this paper are already described in the previos paper, because of this I have not described most of the commands except the newones.
+
+Is-Is Routing Protocol:
+
+we have a network topology where there are three routers connect to each other through fast Ethernet cables. The router names are R1, R2, and R3.
+In our topology We have switches attached to every router of the network and we have  two pc attached to every switch, two pc are required to show connectivity between devices of routers its self and connection with other networks.
+Configuration:
+On R1, we execute the following commands to assign 1.1.1.1/24 IP address to the Loopback0 interface.
+R1(config)#interface Loopback0
+R1(config-if)#ip add 1.1.1.1 255.255.255.0
+Next, we execute the following commands to assign 10.10.10.1/24 IP address to the FastEthernet0/0 interface and enable IS-IS for IP on the FastEthernet0/0 interface.
+R1(config)#interface fa0/0
+R1(config-if)#ip address 10.10.10.1 255.255.255.0
+R1(config-if)#ip router isis
+R1(config-if)#exit
+Next, we execute the following commands to enable the IS-IS process and assign an area and a system ID. In this example, we will use 49.0001.1111.1111.1111.00 as a system ID.
+R1(config)#router isis
+R1(config-router)#net 49.0001.1111.1111.1111.00
+Once you have configured R1, next, move on to R2, and execute the following commands to assign 2.2.2.2/24 IP address to the Loopback0 interface.
+R2(config)#interface loopback0
+R2(config-if)#ip add 2.2.2.2 255.255.255.0
+Next, we execute the following commands to assign the IP address to the FastEthernet0/0 interface and enable IS-IS for IP to the FastEthernet0/0 interface.
+R2(config)#interface fa0/0
+R2(config-if)#ip address 10.10.10.2 255.255.255.0
+R2(config-if)#ip router isis
+R2(config-if)#exit
+Next, we execute the following commands to assign 20.20.20.1/24 IP address to the FastEthernet0/1 interface and enable IS-IS for IP to the FastEthernet0/1 interface.
+R2(config)#interface fa0/1
+R2(config-if)#ip address 20.20.20.1 255.255.255.0
+R2(config-if)#ip router isis
+R2(config-if)#exit
+Next, we execute the following commands to enable the IS-IS process, assign an area and a system ID. In this example, we will use 49.0002.2222.2222.2222.00 as a system ID.
+R2(config)#router isis
+R2(config-router)#net 49.0002.2222.2222.2222.00
+Next, move on to R3 and we execute the following commands to assign 3.3.3.3/24 IP address to the Loopback0 interface.
+R3(config)#interface Loopback0
+R3(config-if)#ip add 3.3.3.3 255.255.255.0
+Next, we execute the following commands to assign 20.20.20.2/24 IP address to the FastEthernet0/1 interface and enable IS-IS for IP to the FastEthernet0/1 interface.
+R3(config)#interface fa0/1
+R3(config-if)#ip address 20.20.20.2 255.255.255.0
+R3(config-if)#ip router isis
+R3(config-if)#exit
+Next, we execute the following commands to enable the IS-IS process, assign an area and a system ID. In this example, we will use 49.0003.3333.3333.333300 as a system ID.
+R3(config)#router isis
+R3(config-router)#net 49.0003.3333.3333.3333.00
+
+Verification of IS-IS Routing Protocol:
+To verity is-is routing protocol we have to use "show ip route" command for seeing the routing table and for checking connectivity of the devices we use "ping ip-add" as "ping 10.10.10.1" to ping device with ip address "10.10.10.1" and there are many other commands that are very useful and are written with description in the follow:
+Router# show clns is tag3 neighbors detail
+Displays IS-IS information for IS-IS router adjacencies.
+Router# show clns interface
+List the CLNS-specific information about each interface.
+Router# show clns area3 neighbors
+Displays both ES and IS neighbors.
+The show clns neighbor command output verifies that the right adjacencies have established. A matrix of adjacencies should be prepared before you configure your routers, showing what neighbors should be expected in the adjacencies table, to facilitate verification.
+Router# show clns area3 traffic
+Displays traffic statistics.
+To monitor IS-IS for stability once it has been deployed across your network, enter the show clns traffic command to check the following important statistics: high numbers of SPFs, checksum errors, and
+retransmissions. To troubleshoot IS-IS behavior, you can use the output from the show clns traffic command to check for the following indicators:
+The number of link-state PDUs (LSPs) can help you determine the stability of the IS-IS network. The number of LSPs should never be zero. However, an LSP count that keeps increasing over a short time
+period indicates a network issue.
+LSP retransmissions should stay low. A later execution of the show clns traffic command that shows an increase in LSP retransmissions, as compared to an earlier execution of the
+command, can indicate instability or traffic problems.To check for partial route calculations (PRCs), enter the show clns traffic command. PRCs are flooded when a change that does not affect topology is reported through an LSP; typical examples include the addition or removal of a prefix or metric changes for external or passive interfaces. A PRC update queue that remains full or increases to the maximum value for long periods of time indicates network instability.
+LSP checksum errors indicate a problem.
+The update queue should not stay full and should not drop much
+Router# show ip route 172.16.0.21
+DisplayRouter# show isis database detail
+Displays additional information about the IS-IS database.
+Displays the link-state database for Level-1 and Level-2, the contents for each LSP, and the link-state protocol PDU identifier.s the current state of the routing table
+Router# show isis database verbose
+Displays additional information about the IS-IS database such as the sequence number, checksum, and holdtime for LSPs.
+Router# show isis topology
+Displays a list of all connected routers in all areas.
+Router# show isis neighbors detail
+Displays IS-IS adjacency information.
+The show isis neighbor detailcommand output verifies that the right
+adjacencies have established. A matrix of adjacencies should be prepared before you configure your routers, showing what neighbors should be expected in the adjacencies table, to facilitate verification.
+Shutting down Is-Is :
+Router> enable
+Router# configure terminal
+Router(config)# interface f0
+Router(config-if)# isis protocol shutdown
+ The isis protocol shutdown command shutdown isis
+Router(config-if)# end
+
+Configuring IS-IS Authentication:
+IS-IS now supports MD5 authentication, which is more secure than clear text authentication because it is more secure then clear text authentication we use it as our authentication technique.
+Router> enable
+Router# configure terminal
+Router(config)# key chain remote3754
+Router(config-keychain)# key 100
+Router(config-keychain-key)# key-string mno172
+Router(config-keychain-key)# exit
+Router(config-keychain)# exit
+
+Router(config)# router isis 
+Router(config-router)# authentication sendonly
+Router(config-router)# authentication mode md5
+Router(config-router)# authentication keychain remote3754
+
+we Repeat same steps of authentication for all routers.
+
+NAT( Network Address Translation):
+It translate private ip address in to public ip address and public ip address in to private ip address.
+
+Static Translation of Inside Source Addresses:
+Configure static translation of inside source addresses to allow one-to-one mapping between an inside local address and an inside global address. Static translation is useful when a host on the inside must be accessible by a fixed address from the outside.
+
+With the fix for CSCtl04702, if the static inside source address matches the inside global address, the output of the show ip aliases command displays both the addresses. The static inside source address is displayed as an interface address, and the inside global address is displayed as a dynamic address. Before the fix, if the static inside source address matched the inside global address, the output of the show ip aliases command displayed only the static inside source address.
+Router> enable
+Router(config)# ip nat inside source static 10.10.10.1 172.16.131.1
+Router(config)# interface ethernet 1
+Router(config-if)# ip address 10.114.11.39 255.255.255.0
+ Router(config-if)# ip nat inside
+Router(config-if)# exit
+Router(config)# interface gigabitethernet 0/0/0
+Router(config-if)# ip address 172.31.232.182 255.255.255.240
+Router(config-if)# ip nat outside
+Router(config-if)# end
+
+Dynamic translation of inside source addresses:
+Dynamic translationof iside source addresses establishes a mapping between an inside local address and a pool of global addresses. Dynamic translation is useful when multiple users on a private network need to access the Internet. The dynamically configured pool IP address may be used as needed and is released for use by other users when access to the Internet is no longer required.
+
+Router> enable
+Router# configure terminal
+Router(config)# ip nat pool net-208 172.16.233.208 172.16.233.223 prefix-length 28
+Router(config)# access-list 1 permit 192.168.34.0 0.0.0.255
+Router(config)# ip nat inside source list 1 pool net-208
+Router(config)# interface ethernet 1
+Router(config-if)# ip address 10.114.11.39 255.255.255.0
+Router(config-if)# ip nat inside
+Router(config-if)# exit
+Router(config)# interface ethernet 0
+Router(config-if)# ip address 172.16.232.182 255.255.255.240
+Router(config-if)# ip nat outside
+Router(config-if)# end
+
+Note: these configurations are related to the previous paper, it's hard to study configurations just based on this paper.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
